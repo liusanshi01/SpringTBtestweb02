@@ -1,11 +1,11 @@
 package cn._4para.control;
 
 import cn._4para.bo.Label;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 
 //类注解 @RestController
@@ -16,49 +16,49 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/api")
 public class webClient {
-    public static Logger logger = LogManager.getLogger(webClient.class);
+    public static Logger logger = Logger.getLogger(webClient.class);
 //    private final String TARGET_HOST = "http://localhost:8080";
 //    private WebClient webClient;
 
 //    GetMapping
 //    客户端只能用 GET 方式请求，适用于查询数据
-    @GetMapping("/gethello")
-    public String helloworld(){
-        return "helloworld";
-    }
-
-//    @PostMapping
-//    客户端只能用 POST方式请求，适用于提交数据。
-
-    @PostMapping("/posthello")
-    public String getpost(){
-        return "helloworld";
-    }
-//    @DeleteMapping
-//    客户端只能用 DELETE方式请求，使用于删除数据。
-
-
-    //在RequestMapping的源码中提到，这种支持任意请求方式，类似于自适应。所以感觉这个是万能
-    //1.1param使用方式
-    @RequestMapping("/getinfo")
-    public String getInfo(@RequestParam(name = "param",
-            required = false,
-            defaultValue = "param dafault value") String param){
-        return param;
-    }
-    //1.2param使用方式
-    @RequestMapping("/getinfo/{param}")
-    public String getInf2(@PathVariable("param") Object param){
-        return param.toString();
-    }
-
-    //真正使用太保的方式
-    @RequestMapping(value = "/predictor2", method = RequestMethod.POST)
-    public String getLabel2(HttpServletRequest req) {
-                         //HttpServletRequest request
-        String result=req.getParameter("strJson");
-        return result;
-    }
+//    @GetMapping("/gethello")
+//    public String helloworld(){
+//        return "helloworld";
+//    }
+//
+////    @PostMapping
+////    客户端只能用 POST方式请求，适用于提交数据。
+//
+//    @PostMapping("/posthello")
+//    public String getpost(){
+//        return "helloworld";
+//    }
+////    @DeleteMapping
+////    客户端只能用 DELETE方式请求，使用于删除数据。
+//
+//
+//    //在RequestMapping的源码中提到，这种支持任意请求方式，类似于自适应。所以感觉这个是万能
+//    //1.1param使用方式
+//    @RequestMapping("/getinfo")
+//    public String getInfo(@RequestParam(name = "param",
+//            required = false,
+//            defaultValue = "param dafault value") String param){
+//        return param;
+//    }
+//    //1.2param使用方式
+//    @RequestMapping("/getinfo/{param}")
+//    public String getInf2(@PathVariable("param") Object param){
+//        return param.toString();
+//    }
+//
+//    //真正使用太保的方式
+//    @RequestMapping(value = "/predictor2", method = RequestMethod.POST)
+//    public String getLabel2(HttpServletRequest req) {
+//                         //HttpServletRequest request
+//        String result=req.getParameter("strJson");
+//        return result;
+//    }
 
 
     //实例用法种一种
@@ -68,18 +68,13 @@ public class webClient {
         if (label.getId()!=null && label.getLabel() !=0) {
 
             logger.info("{" +
-                    "\"status\" : 0 , \"msg\" : \"\""
-                    + '}');
+                    "\"id\" : "+label.getId()+" ," +
+                    " \"label\" : "+label.getLabel()+ "}");
 
             return "{" +
                 "\"status\" : 0 , \"msg\" : \"\""
                 + '}';
         }else {
-
-            logger.info("{" +
-                    "\"status\" : -1 , \"msg\" : \"label is null!\""
-                    + '}');
-
             return "{" +
                     "\"status\" : -1 , \"msg\" : \"label is null!\""
                     + '}';
